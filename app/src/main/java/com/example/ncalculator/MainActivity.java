@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         eight = findViewById(R.id.btneit);
         nine = findViewById(R.id.btnnine);
         zero = findViewById(R.id.btnzero);
+        point = findViewById(R.id.btnpoint);
         txtv = findViewById(R.id.txtv);
         add = findViewById(R.id.btnaddsam);
         subr = findViewById(R.id.btnsub);
