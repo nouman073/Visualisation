@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         one = findViewById(R.id.btnone);
         two = findViewById(R.id.btntwo);
         three = findViewById(R.id.btnthree);
