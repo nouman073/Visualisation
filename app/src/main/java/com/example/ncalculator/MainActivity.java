@@ -189,8 +189,6 @@ public class MainActivity extends AppCompatActivity {
             case '/':
                 divideAndDisplayResult(val1, val2);
                 break;
-                default:
-                    break;;
         }
     }
 
