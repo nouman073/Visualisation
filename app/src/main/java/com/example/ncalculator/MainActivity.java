@@ -3,14 +3,16 @@ package com.example.ncalculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button one, two, three, four, five, six, seven, eight, nine, zero, add, multiply, divide, subr, equal, point;
-    TextView txtv;
+    Button one, two, three, four, five, six, seven, eight, nine, zero, add, multiply, divide, subr, equal, point, clear;
+    TextView txtv, txtvoperator, txtresult;
+    boolean pointedit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +29,24 @@ public class MainActivity extends AppCompatActivity {
         nine = findViewById(R.id.btnnine);
         zero = findViewById(R.id.btnzero);
         point = findViewById(R.id.btnpoint);
-        txtv = findViewById(R.id.txtv);
         add = findViewById(R.id.btnaddsam);
         subr = findViewById(R.id.btnsub);
         multiply = findViewById(R.id.btnmultiply);
         divide = findViewById(R.id.btndivide);
-        equal=findViewById(R.id.btnequal);
+        equal = findViewById(R.id.btnequal);
+        clear = findViewById(R.id.btnclear);
 
+
+        txtvoperator = findViewById(R.id.txtvoperator);
+        txtresult = findViewById(R.id.txtresult);
+        txtv = findViewById(R.id.txtv);
+
+        equal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calculate();
+            }
+        });
 
         one.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,33 +113,127 @@ public class MainActivity extends AppCompatActivity {
         point.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtv.setText(txtv.getText() + ".");
+                if (!pointedit) {
+                    pointedit = true;
+                    txtv.setText(txtv.getText() + ".");
+                }
+
             }
         });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtv.setText(txtv.getText() + "+");
+                if (moveValToResult()) {
+                    txtvoperator.setText("+");
+                }
             }
         });
         subr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtv.setText(txtv.getText() + "-");
+                if (moveValToResult()) {
+                    txtvoperator.setText("-");
+                }
             }
         });
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtv.setText(txtv.getText() + "2");
+                if (moveValToResult()) {
+                    txtvoperator.setText("*");
+                }
             }
         });
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtv.setText(txtv.getText() + "2");
+                if (moveValToResult()) {
+                    txtvoperator.setText("/");
+                }
             }
+        });
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txtvoperator.setText("");
+                txtv.setText("");
+                txtresult.setText("");
+                pointedit = false;
+            }
+
         });
 
     }
+
+    private void calculate() {
+        if (TextUtils.isEmpty(txtv.getText()) || TextUtils.isEmpty(txtresult.getText())) {
+
+        }
+        else {
+            showResult(txtresult.getText().toString(), txtvoperator.getText().toString(), txtv.getText().toString());
+        }
+    }
+
+    private void showResult(String val1, String operator, String val2) {
+        char op = operator.charAt(0);
+        switch (op) {
+            case '+':
+                addAndDisplayResult(val1, val2);
+                break;
+            case '-':
+                subtractAndDisplayResult(val1, val2);
+                break;
+            case '*':
+                multiplyAndDisplayResult(val1, val2);
+                break;
+            case '/':
+                divideAndDisplayResult(val1, val2);
+                break;
+        }
+    }
+
+    private void divideAndDisplayResult(String val1, String val2) {
+        double v1 = Double.parseDouble(val1);
+        double v2 = Double.parseDouble(val2);
+        if (v2 != 0) {
+            showFinalResult(String.valueOf(v1/v2));
+        }
+    }
+
+    private void showFinalResult(String s) {
+        txtresult.setText(s);
+        txtvoperator.setText("");
+        txtv.setText("");
+        pointedit = false;
+    }
+
+    private void multiplyAndDisplayResult(String val1, String val2) {
+        double v1 = Double.parseDouble(val1);
+        double v2 = Double.parseDouble(val2);
+        showFinalResult(String.valueOf(v1*v2));
+    }
+
+    private void subtractAndDisplayResult(String val1, String val2) {
+        double v1 = Double.parseDouble(val1);
+        double v2 = Double.parseDouble(val2);
+        showFinalResult(String.valueOf(v1-v2));
+    }
+
+    private void addAndDisplayResult(String val1, String val2) {
+        double v1 = Double.parseDouble(val1);
+        double v2 = Double.parseDouble(val2);
+        showFinalResult(String.valueOf(v1+v2));
+    }
+
+    private boolean moveValToResult() {
+        if (TextUtils.isEmpty(txtv.getText())) {
+            return false;
+        } else {
+            txtresult.setText(txtv.getText().toString());
+            txtv.setText("");
+            return true;
+        }
+    }
+
+
 }
