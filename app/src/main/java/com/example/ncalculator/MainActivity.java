@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     Button one, two, three, four, five, six, seven, eight, nine, zero, add, multiply, divide, subr, equal, point, clear;
-    TextView txtv, txtvoperator, txtresult;
+    TextView txtv, txtvoperator, txtresult,txt;
     boolean pointedit = false;
 
     @Override
